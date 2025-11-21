@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".clang-format" />
+  </Folder>
+  <Project Path="src/il2cpp-external.vcxproj" Id="8161ea1c-cc08-48f2-b745-b7bc34d16070" />
+</Solution>
