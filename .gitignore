@@ -1,4 +1,4 @@
 .vs/
 bin/
 
-il2cpp-external.vcxproj.user
+*.user
