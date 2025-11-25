@@ -1,100 +1,95 @@
-#include <memory/memory.hpp>
+// memory/memory.cpp
+#include "memory.hpp"
 
-#include <tlhelp32.h>
-
-#include <print>
-
+// Init DMA + attach to process
 bool memory_c::init(const std::string& process) {
-    const auto snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    process_name = process;
 
-    if (snap == INVALID_HANDLE_VALUE) {
+    // You can add retries / sleeps if you want, but your main.cpp
+    // already loops until init() returns true.
+    if (!mem.Init(process_name, true /*memMap*/, true /*debug*/)) {
         return false;
     }
 
-    PROCESSENTRY32 pe = {0};
-    pe.dwSize = sizeof(PROCESSENTRY32);
-
-    for (bool success = Process32First(snap, &pe); success == true; success = Process32Next(snap, &pe)) {
-        if (strcmp(process.c_str(), pe.szExeFile) == 0) {
-            if (snap) {
-                CloseHandle(snap);
-            }
-
-            this->pid = pe.th32ProcessID;
-            std::println("pid: {}", this->pid);
-
-            this->handle = OpenProcess(PROCESS_ALL_ACCESS, false, this->pid);
-
-            return this->add_module(process);
-        }
-    }
-
-    if (snap) {
-        CloseHandle(snap);
-    }
-
-    return false;
+    // Cache the main module (exe) if you want
+    add_module(process_name);
+    return true;
 }
 
 bool memory_c::add_module(const std::string& req_module) {
-    const auto snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, this->pid);
-
-    if (snap == INVALID_HANDLE_VALUE) {
+    // Use DMA library to find base + size
+    size_t base = mem.GetBaseDaddy(req_module);
+    if (!base) {
         return false;
     }
 
-    MODULEENTRY32 me = {0};
-    me.dwSize = sizeof(MODULEENTRY32);
-
-    for (bool success = Module32First(snap, &me); success == true; success = Module32Next(snap, &me)) {
-        if (strcmp(req_module.c_str(), me.szModule) == 0) {
-            if (snap) {
-                CloseHandle(snap);
-            }
-
-            this->modules[req_module] = {(std::uint64_t)me.modBaseAddr, me.modBaseSize};
-
-            return true;
-        }
+    size_t size = mem.GetBaseSize(req_module);
+    if (!size) {
+        return false;
     }
 
-    if (snap) {
-        CloseHandle(snap);
-    }
-
-    return false;
+    module_t mod{};
+    mod.base = static_cast<std::uint64_t>(base);
+    mod.size = static_cast<std::uint32_t>(size);
+    modules[req_module] = mod;
+    return true;
 }
 
 module_t memory_c::get_module(const std::string& req_module) {
-    return this->modules[req_module];
+    auto it = modules.find(req_module);
+    if (it != modules.end()) {
+        return it->second;
+    }
+
+    // Lazy-load if not cached yet
+    if (!add_module(req_module)) {
+        return {}; // zeroed module_t
+    }
+
+    return modules[req_module];
+}
+
+std::uint32_t memory_c::protect(std::uintptr_t /*address*/, size_t /*size*/, std::uint32_t protect) {
+    // Can't change page protections over DMA; keep API for compatibility.
+    // If something expects an "old protect", we just echo the requested one.
+    return protect;
 }
 
 std::string memory_c::read_string(std::uintptr_t address) {
-    std::string buffer{};
+    std::string buffer;
 
-    do {
-        buffer.push_back(this->read<char>(address++));
-    } while (this->read<char>(address) != '\0');
+    for (;;) {
+        char c{};
+        if (!mem.Read(address, &c, sizeof(c))) {
+            throw std::runtime_error("dma memory read_string fail");
+        }
+        if (c == '\0') {
+            break;
+        }
+        buffer.push_back(c);
+        ++address;
+    }
 
     return buffer;
 }
 
 std::wstring memory_c::read_wstring(std::uintptr_t address) {
-    std::wstring buffer { };
+    std::wstring buffer;
 
-    do {
-        buffer.push_back(this->read<wchar_t>(address++));
-    } while (this->read<wchar_t>(address) != L'\0');
+    for (;;) {
+        wchar_t c{};
+        if (!mem.Read(address, &c, sizeof(c))) {
+            throw std::runtime_error("dma memory read_wstring fail");
+        }
+        if (c == L'\0') {
+            break;
+        }
+        buffer.push_back(c);
+        address += sizeof(wchar_t);
+    }
 
     return buffer;
 }
 
-std::uint32_t memory_c::protect(std::uintptr_t address, size_t size, std::uint32_t protect) {
-    DWORD old;
-    if (!VirtualProtectEx(this->handle, reinterpret_cast<void*>(address), size, protect, &old)) {
-        throw std::runtime_error("memory protect fail");
-    }
-    return old;
-}
-
+// Global instance for the rest of your code
 std::shared_ptr<memory_c> memory = std::make_shared<memory_c>();

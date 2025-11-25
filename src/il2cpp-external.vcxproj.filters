@@ -21,6 +21,24 @@
     <ClCompile Include="memory\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DMALibrary\DMALibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMALibrary\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMALibrary\Memory\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMALibrary\Memory\Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMALibrary\Memory\Registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMALibrary\Memory\Shellcode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="memory\memory.hpp">
@@ -32,5 +50,61 @@
     <ClInclude Include="sdk\il2cpp\il2cpp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DMALibrary\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\Memory\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\Memory\Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\Memory\Registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\Memory\Shellcode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\nt\structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\libs\leechcore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMALibrary\libs\vmmdll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Documents\GitHub\Call-Of-Duty-BO6---DMA\Usermode\DMALibrary\libs\leechcore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Documents\GitHub\Call-Of-Duty-BO6---DMA\Usermode\DMALibrary\libs\vmmdll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="leechcore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vmmdll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DMALibrary\DMALibrary.vcxproj" />
+    <None Include="DMALibrary\DMALibrary.vcxproj.filters" />
+    <None Include="DMALibrary\DMALibrary.vcxproj.user" />
+    <None Include="DMALibrary\info.db" />
+    <None Include="DMALibrary\libs\info.db" />
+    <None Include="..\..\..\..\Documents\GitHub\Call-Of-Duty-BO6---DMA\Usermode\DMALibrary\libs\info.db" />
+    <None Include="info.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\Documents\GitHub\Call-Of-Duty-BO6---DMA\Usermode\DMALibrary\libs\leechcore.lib" />
+    <Library Include="..\..\..\..\Documents\GitHub\Call-Of-Duty-BO6---DMA\Usermode\DMALibrary\libs\vmm.lib" />
+    <Library Include="leechcore.lib" />
+    <Library Include="vmm.lib" />
+    <Library Include="DMALibrary\libs\leechcore.lib" />
+    <Library Include="DMALibrary\libs\vmm.lib" />
   </ItemGroup>
 </Project>

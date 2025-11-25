@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory/memory.hpp>
-#include <sdk/offsets.hpp>
+#include "../../memory/memory.hpp"
+#include "../offsets.hpp"
 
 #include <print>
 

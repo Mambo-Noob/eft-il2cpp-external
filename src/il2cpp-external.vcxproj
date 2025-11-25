@@ -84,13 +84,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DMALibrary\DMALibrary.cpp" />
+    <ClCompile Include="DMALibrary\Memory\InputManager.cpp" />
+    <ClCompile Include="DMALibrary\Memory\Memory.cpp" />
+    <ClCompile Include="DMALibrary\Memory\Registry.cpp" />
+    <ClCompile Include="DMALibrary\Memory\Shellcode.cpp" />
+    <ClCompile Include="DMALibrary\pch.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="memory\memory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DMALibrary\framework.h" />
+    <ClInclude Include="DMALibrary\libs\leechcore.h" />
+    <ClInclude Include="DMALibrary\libs\vmmdll.h" />
+    <ClInclude Include="DMALibrary\Memory\InputManager.h" />
+    <ClInclude Include="DMALibrary\Memory\Memory.h" />
+    <ClInclude Include="DMALibrary\Memory\Registry.h" />
+    <ClInclude Include="DMALibrary\Memory\Shellcode.h" />
+    <ClInclude Include="DMALibrary\nt\structs.h" />
+    <ClInclude Include="DMALibrary\pch.h" />
     <ClInclude Include="memory\memory.hpp" />
     <ClInclude Include="sdk\il2cpp\il2cpp.hpp" />
     <ClInclude Include="sdk\offsets.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DMALibrary\DMALibrary.vcxproj" />
+    <None Include="DMALibrary\DMALibrary.vcxproj.filters" />
+    <None Include="DMALibrary\DMALibrary.vcxproj.user" />
+    <None Include="DMALibrary\info.db" />
+    <None Include="DMALibrary\libs\info.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="DMALibrary\libs\leechcore.lib" />
+    <Library Include="DMALibrary\libs\vmm.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
